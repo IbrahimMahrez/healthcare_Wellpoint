@@ -1,3 +1,4 @@
+
 require("dotenv").config();
 
 const express = require("express");
@@ -8,9 +9,15 @@ const rateLimit = require("express-rate-limit");
 
 const connectDB = require("./config/db");
 
-const { notFound, errorHandler } = require("./middleware/errorMiddleware");
+const {
+  notFound,
+  errorHandler,
+} = require("./middleware/errorMiddleware");
 
+// ===============================
 // Routes
+// ===============================
+
 const authRoutes = require("./routes/authRoutes");
 const doctorRoutes = require("./routes/doctorRoutes");
 const appointmentRoutes = require("./routes/appointmentRoutes");
@@ -49,7 +56,7 @@ console.log(
 );
 
 // ===============================
-// Connect Database
+// Database
 // ===============================
 
 connectDB();
@@ -70,16 +77,21 @@ app.use(helmet());
 // CORS
 // ===============================
 
+// Remove trailing slash from CLIENT_URL
+const clientUrl = process.env.CLIENT_URL?.replace(/\/$/, "");
+
 const allowedOrigins = [
   "http://localhost:5173",
-  process.env.CLIENT_URL,
+  clientUrl,
 ].filter(Boolean);
+
+console.log("Allowed CORS origins:", allowedOrigins);
 
 app.use(
   cors({
     origin: function (origin, callback) {
       // Allow requests without Origin
-      // Example: Postman / server-to-server
+      // Example: Postman / server-to-server requests
       if (!origin) {
         return callback(null, true);
       }
@@ -128,7 +140,7 @@ app.use(
 app.use(morgan("dev"));
 
 // ===============================
-// Rate Limiting
+// Rate Limiter
 // ===============================
 
 const limiter = rateLimit({
@@ -158,7 +170,7 @@ app.get("/api/health", (req, res) => {
 });
 
 // ===============================
-// Routes
+// API Routes
 // ===============================
 
 app.use("/api/auth", authRoutes);
@@ -192,7 +204,7 @@ app.use("/api/admissions", admissionRoutes);
 app.use("/api/consultations", consultationRoutes);
 
 // ===============================
-// 404 Handler
+// 404
 // ===============================
 
 app.use(notFound);
@@ -204,7 +216,7 @@ app.use(notFound);
 app.use(errorHandler);
 
 // ===============================
-// Server
+// Start Server
 // ===============================
 
 const PORT = process.env.PORT || 5000;
@@ -212,9 +224,9 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 
-  // Automatically:
-  // - starts consultation sessions at appointment time
-  // - auto-cancels requests that providers never confirm
+  // Start scheduler
+  // - Starts consultation sessions at appointment time
+  // - Auto-cancels requests that were never confirmed
 
   startScheduler();
 });
