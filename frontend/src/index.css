@@ -1,0 +1,71 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-primary-50/40 text-ink-900 font-body antialiased;
+}
+
+.font-display {
+  font-family: "Fraunces", serif;
+}
+
+/* Arabic reads better with a dedicated typeface than the Latin display/body pair. */
+html[lang="ar"] body {
+  font-family: "Cairo", sans-serif;
+}
+html[lang="ar"] .font-display {
+  font-family: "Cairo", sans-serif;
+  font-weight: 700;
+}
+
+:focus-visible {
+  outline: 2px solid #118a64;
+  outline-offset: 2px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes floatY {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+.animate-float {
+  animation: floatY 5s ease-in-out infinite;
+}
+
+@keyframes softPulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(17, 138, 100, 0.35);
+  }
+  70% {
+    box-shadow: 0 0 0 14px rgba(17, 138, 100, 0);
+  }
+}
+.animate-soft-pulse {
+  animation: softPulse 2.2s ease-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
