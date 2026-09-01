@@ -1,702 +1,702 @@
-# Wellpoint — Healthcare Super App (MERN MVP)
-🏥 Wellpoint — Healthcare Super App
+# Wellpoint — Healthcare Super App
 
-Wellpoint is a full-stack healthcare Super App MVP built with the MERN Stack.
-The platform connects patients with doctors, laboratories, and pharmacies through a single responsive healthcare experience.
+A modern full-stack healthcare platform built with the **MERN stack**, designed to connect patients, doctors, laboratories, pharmacies, and administrators in one unified application.
 
-The project focuses on simplifying healthcare access by providing doctor discovery, appointment booking, prescriptions, laboratory requests, pharmacy search, and an AI-powered triage assistant.
+Wellpoint combines doctor discovery and appointment booking with medical records, prescriptions, laboratory and radiology services, pharmacy workflows, AI-powered health guidance, notifications, and online consultation features.
 
-🚀 MERN Stack | AI-Powered | Responsive | REST API | Role-Based Authentication
+---
 
-⸻
+## ✨ Main Features
 
-📌 Overview
+### 👤 Authentication & User Roles
 
-Wellpoint is designed as a centralized digital healthcare platform where users can access multiple healthcare services from one application.
+The platform supports multiple account types with JWT-based authentication:
+
+* Patient
+* Doctor
+* Laboratory
+* Pharmacy
+* Administrator
+
+Features include:
+
+* Registration and login
+* JWT authentication
+* Protected routes
+* Role-based authorization
+* Account status management
+* Doctor verification by administrators
+
+---
+
+### 🩺 Doctor Discovery & Appointments
+
+Patients can discover doctors and manage appointments.
+
+* Search doctors
+* Filter by specialty
+* Filter by city
+* Filter by rating
+* Filter by consultation fee
+* View doctor profiles
+* Book appointments
+* Manage appointment status
+* Doctor patient management
+* Doctor availability/profile management
+
+---
+
+### 🤖 AI Health Assistant
+
+Wellpoint includes an AI-powered health guidance assistant using the **Google Gemini API**.
+
+The assistant is designed for preliminary health guidance and:
+
+* Answers general health-related questions
+* Uses conversation history
+* Suggests appropriate medical specialties
+* Provides safety guidance
+* Detects potentially urgent symptoms and recommends emergency medical care
+* Clearly communicates that it does not replace a licensed physician
+
+> **Important:** The AI assistant provides general health information only. It is not a medical diagnostic tool and should not be used as a replacement for professional medical care.
+
+---
+
+### 📋 Medical Records
+
+Patients can manage their health information through their personal medical record.
+
+Supported functionality includes:
+
+* Personal health information
+* Medical history
+* Patient health records
+* Doctor access to authorized patient information
+
+---
+
+### 💊 Prescriptions
+
+Doctors can create prescriptions for patients.
 
 Patients can:
 
-* 👨‍⚕️ Search for doctors
-* 🔎 Filter doctors by specialty and city
-* 📅 Book medical appointments
-* 💬 Chat with an AI triage assistant
-* 💊 View prescriptions
-* 🧪 Request laboratory tests
-* 💳 Create payment records
-* 📊 Manage appointments through a personal dashboard
+* View prescriptions
+* Review prescription details
+* Send prescriptions to pharmacies
 
-Healthcare providers can manage their respective workflows through role-based access.
+---
 
-The application is fully responsive and optimized for:
+### 🧪 Laboratory Services
 
-* 📱 Mobile
-* 💻 Desktop
-* 📟 Tablet
+The platform includes laboratory discovery and test workflows.
 
-⸻
+* Search laboratories
+* Request laboratory tests
+* Doctor-requested tests
+* Patient test history
+* Laboratory test queue
+* Laboratory result submission
 
-✨ Features
+---
 
-🔐 Authentication & Authorization
+### 🩻 Radiology
 
-Wellpoint provides authentication for multiple healthcare roles:
+Radiology workflows are included for patients, doctors, and laboratories.
 
-* 👤 Patient
-* 👨‍⚕️ Doctor
-* 🧪 Laboratory
-* 💊 Pharmacy
+* Request radiology scans
+* Doctors can request scans for patients
+* View requested scans
+* Laboratory/radiology queue management
+* Upload radiology reports
 
-Authentication includes:
+---
 
-* User registration
-* User login
-* JWT authentication
-* Protected API routes
-* Role-based authorization
-* Secure password handling
+### 💊 Pharmacy
 
-⸻
+Pharmacy functionality includes:
 
-👨‍⚕️ Doctor Discovery
+* Search pharmacies
+* Pharmacy accounts
+* Pharmacy order management
+* Prescription-to-pharmacy workflow
+* Order status management
 
-Patients can easily discover doctors based on different criteria.
+---
 
-Search & Filtering
+### 🏥 Admission Permits
 
-* Specialty
-* City
-* Rating
-* Consultation fee
+Patients can access their admission permits through the application.
 
-Each doctor has a dedicated details page containing relevant information before booking an appointment.
+---
 
-⸻
+### 🧑‍⚕️ Online Consultation
 
-📅 Appointment Booking
+Wellpoint includes an online consultation environment connected to appointments.
 
-Patients can book appointments with available doctors.
+Features include:
 
-Appointment workflow
+* Consultation rooms
+* Patient/doctor participant authorization
+* Appointment-based access
+* Consultation chat
+* Message history
+* WebRTC signaling
+* Offer / answer / ICE candidate signaling
+* Call notifications
 
-Patient
-   ↓
-Search Doctor
-   ↓
-View Doctor Details
-   ↓
-Book Appointment
-   ↓
-Doctor Confirms
-   ↓
-Appointment Completed
+The consultation system provides the foundation for browser-based real-time consultations.
 
-Appointments can have different statuses:
+---
 
-* Pending
-* Confirmed
-* Cancelled
-* Completed
+### 🔔 Notifications
 
-Doctors and patients can manage appointments according to their permissions.
+The application includes an in-app notification system.
 
-⸻
+Users can:
 
-🤖 AI Triage Assistant
+* View notifications
+* Mark individual notifications as read
+* Mark all notifications as read
+* Receive appointment and consultation-related notifications
 
-Wellpoint includes an AI-powered healthcare assistant designed for initial symptom guidance and triage.
+---
 
-Users can describe their symptoms and receive AI-generated guidance.
+### ⭐ Reviews
 
-Example
+Patients can submit reviews for supported healthcare providers and view existing reviews.
 
-Patient:
-"I have a headache and fever."
-        ↓
-AI Triage Assistant
-        ↓
-Provides general guidance
-and recommends an appropriate
-level of care.
+---
 
-⚠️ The AI assistant is intended for initial guidance only and does not replace a qualified healthcare professional, diagnosis, or emergency medical care.
+### 🚨 Emergency
 
-The AI functionality requires an OPENAI_API_KEY.
+A dedicated emergency experience is included in the frontend to provide users with quick access to emergency-related functionality.
 
-⸻
+---
 
-💊 Prescriptions
+### 📊 Admin Dashboard
 
-Doctors can issue prescriptions for patients.
+Administrators have access to management and analytics functionality.
 
-Patients can access their prescriptions through their dashboard.
+The admin dashboard provides:
 
-Prescription flow
+* Platform statistics
+* Doctor management
+* Doctor verification
+* Patient management
+* Appointment management
+* Payment records
+* Healthcare provider management
+* Account status management
 
-Doctor
-   ↓
-Create Prescription
-   ↓
-Patient Account
-   ↓
-View Prescription
+---
 
-⸻
+## 🛠️ Technology Stack
 
-🧪 Laboratory Tests
+### Frontend
 
-Patients can request laboratory tests through the platform.
-
-The system provides the foundation for connecting patients with laboratory services.
-
-⸻
-
-💊 Pharmacy & Medicine Search
-
-The application includes pharmacy and medicine search functionality.
-
-Users can search for:
-
-* Pharmacies
-* Medicines
-
-This feature is designed to provide the foundation for future pharmacy ordering and delivery functionality.
-
-⸻
-
-💳 Payments
-
-Wellpoint includes a payment record system.
-
-The current implementation provides a payment placeholder that can be connected to a real payment provider.
-
-Supported integrations can be added in the future, such as:
-
-* Stripe
-* PayPal
-* Fawry
-
-⸻
-
-📊 Dashboards
-
-Wellpoint provides role-based dashboards.
-
-👤 Patient Dashboard
-
-Patients can manage:
-
-* Appointments
-* Prescriptions
-* Laboratory requests
-* Profile information
-* Healthcare interactions
-
-👨‍⚕️ Doctor Dashboard
-
-Doctors can manage:
-
-* Appointments
-* Appointment status
-* Patient interactions
-* Prescriptions
-
-The architecture is designed to support additional dashboards for laboratories and pharmacies.
-
-⸻
-
-🏗️ Technology Stack
-
-Frontend
-
-* React.js
+* React 18
 * Vite
 * Tailwind CSS
-* Responsive UI
-* REST API integration
+* React Router
+* Axios
+* React Leaflet
+* Leaflet
+* Lucide React
 
-Backend
+### Backend
 
 * Node.js
 * Express.js
-* RESTful API
-* JWT Authentication
-* Role-Based Authorization
-
-Database
-
 * MongoDB
-* MongoDB Atlas
 * Mongoose
+* JWT
+* bcryptjs
+* Express Validator
+* Helmet
+* Express Rate Limit
+* Morgan
+* Multer
+* Google Gemini API
 
-AI
+### Architecture
 
-* OpenAI API
+```text
+React + Vite + Tailwind
+          │
+          │ REST API
+          ▼
+Node.js + Express
+          │
+          ▼
+      MongoDB
+```
 
-Development Tools
+---
 
-* npm
-* Git
-* GitHub
-* Environment Variables
+## 📁 Project Structure
 
-⸻
-
-📁 Project Structure
-
+```text
 healthcare-superapp/
 │
 ├── backend/
-│   ├── controllers/
-│   ├── middleware/
-│   ├── models/
-│   ├── routes/
-│   ├── services/
-│   ├── utils/
-│   ├── seed/
-│   ├── server.js
+│   ├── src/
+│   │   ├── config/
+│   │   ├── controllers/
+│   │   ├── middleware/
+│   │   ├── models/
+│   │   ├── routes/
+│   │   ├── services/
+│   │   └── utils/
+│   │
 │   ├── package.json
 │   └── .env.example
 │
 ├── frontend/
 │   ├── src/
+│   │   ├── assets/
 │   │   ├── components/
+│   │   ├── context/
+│   │   ├── layouts/
 │   │   ├── pages/
 │   │   ├── services/
-│   │   ├── hooks/
-│   │   └── ...
+│   │   └── utils/
+│   │
 │   ├── package.json
 │   └── .env.example
 │
 └── README.md
+```
 
-⸻
+---
 
-🔌 API Endpoints
+# 🚀 Installation
 
-Authentication
+## Requirements
 
-Method	Endpoint	Description
-POST	/api/auth/register	Register a new user
-POST	/api/auth/login	Login for any supported role
+Before running the project, make sure you have:
 
-⸻
+* Node.js 18+
+* npm
+* MongoDB or MongoDB Atlas
+* Google Gemini API key
 
-Doctors
+---
 
-Method	Endpoint	Description
-GET	/api/doctors	Search and filter doctors
-GET	/api/doctors/:id	Get doctor details
+## 1. Clone / Extract the Project
 
-Supported filters include:
-
-specialty
-city
-rating
-fee
-
-⸻
-
-Appointments
-
-Method	Endpoint	Description
-POST	/api/appointments	Book an appointment
-PATCH	/api/appointments/:id	Update appointment status
-GET	/api/appointments/my	Get user’s appointments
-
-⸻
-
-AI Assistant
-
-Method	Endpoint	Description
-POST	/api/ai/query	Send a query to the AI triage assistant
-
-Requires:
-
-OPENAI_API_KEY=your_api_key
-
-⸻
-
-Prescriptions
-
-Method	Endpoint	Description
-POST	/api/prescriptions	Create a prescription
-GET	/api/prescriptions/my	Get patient’s prescriptions
-
-⸻
-
-Laboratory Tests
-
-Method	Endpoint	Description
-POST	/api/tests	Request a laboratory test
-
-⸻
-
-Pharmacies
-
-Method	Endpoint	Description
-GET	/api/pharmacies/search	Search pharmacies and medicines
-
-⸻
-
-Payments
-
-Method	Endpoint	Description
-POST	/api/payments/create	Create a payment record
-
-Payment processing is currently implemented as a placeholder and can be connected to a production payment gateway.
-
-⸻
-
-⚙️ Installation & Setup
-
-1. Clone the repository
-
-git clone <YOUR_REPOSITORY_URL>
+```bash
 cd healthcare-superapp
+```
 
-⸻
+---
 
-🖥️ Backend Setup
+# ⚙️ Backend Setup
 
 Navigate to the backend:
 
+```bash
 cd backend
+```
 
 Install dependencies:
 
+```bash
 npm install
+```
 
 Create your environment file:
 
+```bash
 cp .env.example .env
+```
 
-Configure your environment variables:
+On Windows PowerShell you can simply copy the example file manually:
 
-MONGO_URI=your_mongodb_connection_string
-JWT_SECRET=your_jwt_secret
-OPENAI_API_KEY=your_openai_api_key
+```powershell
+Copy-Item .env.example .env
+```
 
-MongoDB
+Configure the `.env` file:
 
-You can use either a local MongoDB instance:
+```env
+PORT=5000
+NODE_ENV=development
 
 MONGO_URI=mongodb://localhost:27017/healthcare_superapp
 
-or MongoDB Atlas:
+JWT_SECRET=your_secure_jwt_secret
+JWT_EXPIRES_IN=7d
 
-MONGO_URI=your_mongodb_atlas_connection_string
+GEMINI_API_KEY=your_gemini_api_key
 
-⸻
+CLIENT_URL=http://localhost:5173
+```
 
-🌱 Seed Demo Data
+Start the backend in development mode:
 
-To add demo doctors:
-
-npm run seed
-
-The seed script adds sample doctor accounts for development and testing.
-
-⸻
-
-🚀 Start Backend
-
-Development mode:
-
+```bash
 npm run dev
+```
 
-The backend will run by default on:
+Or run it normally:
 
+```bash
+npm start
+```
+
+Backend:
+
+```text
 http://localhost:5000
+```
 
-API base URL:
+---
 
-http://localhost:5000/api
+# 🌱 Seed Demo Data
 
-⸻
-
-🎨 Frontend Setup
-
-Open another terminal:
-
-cd frontend
-
-Install dependencies:
-
-npm install
-
-Create:
-
-.env
-
-Add:
-
-VITE_API_URL=http://localhost:5000/api
-
-For a deployed backend:
-
-VITE_API_URL=https://your-backend-url/api
-
-Start the development server:
-
-npm run dev
-
-The frontend will run by default on:
-
-http://localhost:5173
-
-⸻
-
-🔄 Application Architecture
-
-The application follows a modern client-server architecture:
-
-                    ┌─────────────────────┐
-                    │      React App      │
-                    │     + Tailwind      │
-                    └──────────┬──────────┘
-                               │
-                               │ REST API
-                               ▼
-                    ┌─────────────────────┐
-                    │   Express / Node.js │
-                    │                     │
-                    │ Authentication      │
-                    │ Authorization       │
-                    │ Business Logic      │
-                    │ API Routes          │
-                    └──────────┬──────────┘
-                               │
-                 ┌─────────────┴─────────────┐
-                 │                           │
-                 ▼                           ▼
-        ┌─────────────────┐        ┌─────────────────┐
-        │     MongoDB     │        │    OpenAI API   │
-        │                 │        │                 │
-        │ Users           │        │ AI Triage       │
-        │ Doctors         │        │ Assistant       │
-        │ Appointments    │        └─────────────────┘
-        │ Prescriptions   │
-        │ Tests           │
-        │ Payments        │
-        └─────────────────┘
-
-⸻
-
-🔐 Security
-
-The backend implements several security concepts, including:
-
-* JWT-based authentication
-* Protected routes
-* Role-based authorization
-* Password hashing
-* Environment variables for sensitive credentials
-* API-level access control
-
-Sensitive credentials should never be committed to GitHub.
-
-Make sure .env is included in .gitignore.
-
-⸻
-
-📱 Responsive Design
-
-Wellpoint is designed with a responsive-first approach.
-
-The interface adapts to:
-
-📱 Mobile
-     ↓
-📟 Tablet
-     ↓
-💻 Desktop
-
-The goal is to provide a consistent healthcare experience regardless of the device being used.
-
-⸻
-
-🧪 Demo Data
-
-The project includes a seed script that can generate demo doctors for development and testing.
+The project includes a seed script for creating demo data.
 
 Run:
 
+```bash
 npm run seed
+```
 
-This creates 3 demo doctors.
+---
 
-⸻
+# 👑 Create an Administrator
 
-🚧 Current MVP Scope
+To create an administrator account:
 
-The current version focuses on the core healthcare workflow:
+```bash
+npm run create-admin
+```
 
-* ✅ Authentication
-* ✅ Multiple user roles
-* ✅ Doctor search
-* ✅ Specialty filtering
-* ✅ City filtering
-* ✅ Doctor details
-* ✅ Appointment booking
-* ✅ Appointment management
-* ✅ AI triage assistant
-* ✅ Prescriptions
-* ✅ Laboratory test requests
-* ✅ Pharmacy search
-* ✅ Payment records
-* ✅ Patient dashboard
-* ✅ Doctor dashboard
-* ✅ Responsive UI
+Follow the prompts shown in the terminal.
 
-⸻
+---
 
-🔮 Future Improvements
+# 🎨 Frontend Setup
 
-The architecture allows Wellpoint to grow into a complete healthcare ecosystem.
+Open another terminal and navigate to the frontend:
 
-Possible future features include:
+```bash
+cd frontend
+```
 
-🏥 Healthcare
+Install dependencies:
 
-* Video consultations
-* Real-time doctor/patient chat
-* Medical records
-* Health history
-* Lab result uploads
-* Medical report management
+```bash
+npm install
+```
 
-💊 Pharmacy
+Create:
 
-* Online medicine ordering
-* Prescription-based ordering
-* Pharmacy delivery
-* Medicine availability tracking
+```text
+frontend/.env
+```
 
-🧪 Laboratories
+Add:
 
-* Lab booking
-* Home sample collection
-* Digital test results
-* Medical report history
+```env
+VITE_API_URL=http://localhost:5000/api
+```
 
-💳 Payments
+Start the development server:
 
-Production payment integrations such as:
+```bash
+npm run dev
+```
 
-* Stripe
-* PayPal
-* Fawry
+The frontend will normally be available at:
 
-🤖 AI
+```text
+http://localhost:5173
+```
 
-* AI symptom analysis
-* Personalized health guidance
-* Medical document summarization
-* Appointment recommendations
-* Health reminders
+---
 
-📱 Mobile
+# 🏗️ Production Build
 
-A dedicated mobile application can be added using:
+To create a production frontend build:
 
-React Native
+```bash
+cd frontend
+npm run build
+```
 
-while continuing to use the same Node.js/Express backend.
+To preview the production build locally:
 
-⸻
+```bash
+npm run preview
+```
 
-🌍 Deployment
+For production deployment, configure the frontend API URL to point to your deployed backend.
 
-The application can be deployed using modern cloud platforms.
+---
 
-Frontend
+# 🔐 Environment Variables
 
-Possible platforms:
+## Backend
 
-* Vercel
-* Netlify
-* Cloudflare Pages
+Create:
 
-Backend
+```text
+backend/.env
+```
 
-Possible platforms:
+Example:
 
-* Render
-* Railway
-* Fly.io
-* VPS
-
-Database
-
-* MongoDB Atlas
-
-⸻
-
-🛠️ Environment Variables
-
-Backend
+```env
+PORT=5000
+NODE_ENV=development
 
 MONGO_URI=
 JWT_SECRET=
-OPENAI_API_KEY=
+JWT_EXPIRES_IN=7d
 
-Frontend
+GEMINI_API_KEY=
 
-VITE_API_URL=
+CLIENT_URL=http://localhost:5173
+```
 
-Never expose backend secrets inside the frontend environment.
+## Frontend
 
-⸻
+Create:
 
-👨‍💻 Development
+```text
+frontend/.env
+```
 
-Run the backend and frontend separately:
+Example:
 
-Terminal 1
+```env
+VITE_API_URL=http://localhost:5000/api
+```
 
-cd backend
+### Security
+
+**Never commit real API keys, JWT secrets, database credentials, or other private environment variables to Git or include them in a distributed source-code package.**
+
+Use `.env.example` files when distributing the project.
+
+---
+
+# 🔌 API Overview
+
+The backend exposes REST API endpoints under:
+
+```text
+/api
+```
+
+Main API modules include:
+
+| Module           | Base Route            | Purpose                                |
+| ---------------- | --------------------- | -------------------------------------- |
+| Authentication   | `/api/auth`           | Registration, login, current user      |
+| Doctors          | `/api/doctors`        | Doctor discovery and profiles          |
+| Appointments     | `/api/appointments`   | Booking and appointment management     |
+| AI               | `/api/ai`             | Gemini-powered health assistant        |
+| Prescriptions    | `/api/prescriptions`  | Prescription management                |
+| Laboratory Tests | `/api/tests`          | Laboratory test workflows              |
+| Laboratories     | `/api/labs`           | Laboratory discovery                   |
+| Radiology        | `/api/radiology`      | Radiology requests and reports         |
+| Pharmacies       | `/api/pharmacies`     | Pharmacy search and orders             |
+| Health Records   | `/api/health-records` | Patient health records                 |
+| Medical Cases    | `/api/medical-cases`  | Medical case management                |
+| Consultations    | `/api/consultations`  | Consultation rooms, chat and signaling |
+| Notifications    | `/api/notifications`  | User notifications                     |
+| Reviews          | `/api/reviews`        | Provider reviews                       |
+| Payments         | `/api/payments`       | Payment records                        |
+| Admissions       | `/api/admissions`     | Admission permits                      |
+| Admin            | `/api/admin`          | Administration and platform statistics |
+
+---
+
+# 🤖 Gemini AI Configuration
+
+The AI assistant requires a Google Gemini API key.
+
+Set:
+
+```env
+GEMINI_API_KEY=your_api_key
+```
+
+If the key is missing, the AI service will return a configuration error instead of attempting to process requests.
+
+The AI assistant is intentionally configured as a **health guidance / triage assistant**, not as a diagnostic system.
+
+---
+
+# 💳 Payments
+
+The project includes a payment record workflow and payment management endpoints.
+
+The current implementation creates and manages payment records but does **not** provide a complete third-party payment gateway integration.
+
+For production deployments, a payment provider such as Stripe, PayPal, Fawry, or another locally supported gateway can be integrated according to the target market.
+
+---
+
+# 🗺️ Maps
+
+Doctor, laboratory, and pharmacy data can include geographical coordinates.
+
+The frontend includes:
+
+* Leaflet
+* React Leaflet
+
+These can be used to display healthcare providers and locations on interactive maps.
+
+---
+
+# 📱 Responsive Design
+
+The frontend is designed to work across:
+
+* Mobile phones
+* Tablets
+* Laptops
+* Desktop screens
+
+The interface uses a mobile-first responsive layout with:
+
+* Responsive navigation
+* Mobile bottom navigation
+* Responsive cards and grids
+* Adaptive forms
+* Desktop and mobile layouts
+
+---
+
+# 🧪 Development Commands
+
+## Backend
+
+```bash
+npm install
 npm run dev
+npm start
+npm run seed
+npm run create-admin
+```
 
-Terminal 2
+## Frontend
 
-cd frontend
+```bash
+npm install
 npm run dev
+npm run build
+npm run preview
+```
 
-Then open:
+---
 
-http://localhost:5173
+# 📦 Included in This Source Code
 
-⸻
+The project includes:
 
-📌 Project Goals
+* Complete frontend source code
+* Complete backend source code
+* MongoDB/Mongoose models
+* REST API
+* Authentication and authorization
+* Multiple user roles
+* Admin dashboard
+* Patient dashboard
+* Doctor dashboard
+* Laboratory dashboard
+* Pharmacy dashboard
+* Appointment system
+* Medical records
+* Prescriptions
+* Laboratory workflows
+* Radiology workflows
+* Pharmacy workflows
+* AI health assistant
+* Consultation system
+* Consultation messaging
+* WebRTC signaling layer
+* Notifications
+* Reviews
+* Payment record management
+* Responsive UI
+* Database seed utilities
 
-Wellpoint was built to demonstrate how a modern full-stack application can combine:
+---
 
-* Modern React frontend development
-* RESTful backend architecture
-* MongoDB database design
-* Authentication & authorization
-* Role-based systems
-* API integration
-* AI integration
-* Responsive UI development
-* Healthcare-focused workflows
+# ⚠️ Important Production Notes
 
-⸻
+This source code is intended as a customizable healthcare platform and starting point for production applications.
 
-📄 License
+Before deploying in a real healthcare environment, the buyer/development team should perform a complete security, privacy, compliance, infrastructure, and medical-risk review appropriate to the target country and regulations.
 
-This project is currently intended for educational, portfolio, and MVP purposes.
+Recommended production work includes:
 
-Before using Wellpoint in a real healthcare environment, the system would require additional security, privacy, compliance, medical validation, infrastructure, and production-grade monitoring.
+* HTTPS
+* Secure production secrets
+* Production MongoDB configuration
+* Database backups
+* Monitoring and logging
+* File/object storage configuration
+* Email/SMS/push notification providers
+* Production payment gateway
+* Production video infrastructure if required
+* Additional security testing
+* Privacy and regulatory compliance review
 
-⸻
+---
 
-⭐ Wellpoint
+# 📄 License
 
-One platform. Multiple healthcare services.
+This project is distributed under the license included with your purchase.
 
-Connecting patients, doctors, laboratories, and pharmacies through one modern digital healthcare experience.
+The purchaser is responsible for reviewing the applicable license terms before using, modifying, redistributing, or deploying the source code.
 
-If you find this project useful, consider giving the repository a ⭐ on GitHub.
+---
 
+# 📞 Support
+
+For installation issues, configuration questions, or customization requirements, please refer to the documentation and project structure first.
+
+When requesting technical support, provide:
+
+* Node.js version
+* npm version
+* Operating system
+* Backend error message
+* Frontend error message
+* Relevant console/log output
+
+---
+
+# 🚀 Customization Potential
+
+Wellpoint can be extended for:
+
+* Clinics
+* Hospitals
+* Healthcare startups
+* Telemedicine platforms
+* Laboratory networks
+* Pharmacy networks
+* Doctor booking platforms
+* Multi-provider healthcare marketplaces
+* Country-specific healthcare workflows
+
+The modular MERN architecture makes it suitable as a foundation for building customized healthcare applications.
+
+---
+
+## Version
+
+**Wellpoint Healthcare Super App — v1.0.0**
+
+Built with:
+
+**React • Node.js • Express • MongoDB • Tailwind CSS • Google Gemini**
