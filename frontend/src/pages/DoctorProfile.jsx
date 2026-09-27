@@ -57,6 +57,26 @@ export default function DoctorProfile() {
   const [formError, setFormError] = useState("");
   const [liked, setLiked] = useState(false);
   const [shareCopied, setShareCopied] = useState(false);
+  const [myReview, setMyReview] = useState(null);
+  const [myCompletedApptId, setMyCompletedApptId] = useState(null);
+
+  useEffect(() => {
+    api
+      .get(`/doctors/${id}`)
+      .then(({ data }) => setDoctor(data.doctor))
+      .catch(() => setNotFound(true));
+  }, [id]);
+
+  useEffect(() => {
+    api.get(`/reviews/doctor/${id}`).then(({ data }) => {
+      const review = (data.reviews || []).find((r) => r.patientId?._id === user?.id);
+      if (review) setMyReview(review);
+    }).catch(() => {});
+    api.get("/appointments/my?status=completed").then(({ data }) => {
+      const appt = (data.appointments || []).find((a) => a.providerId?._id === id);
+      if (appt) setMyCompletedApptId(appt._id);
+    }).catch(() => {});
+  }, [id, user?.id]);
 
   useEffect(() => {
     api
@@ -208,6 +228,19 @@ export default function DoctorProfile() {
                       <span className="ml-2 font-semibold text-ink-900">{doctor.rating?.toFixed(1) || "New"}</span>
                       <span className="text-sm text-ink-500">({doctor.numReviews || 0})</span>
                     </div>
+                    {myReview ? (
+                      <div className="rounded-xl bg-amber-50 px-4 py-2">
+                        <p className="text-sm font-semibold text-ink-900">Your Review</p>
+                        <div className="flex gap-1 mt-1">
+                          {[...Array(5)].map((_, i) => (
+                            <Star key={i} size={14} className={i < myReview.rating ? "fill-amber-400 text-amber-400" : "text-ink-300"} />
+                          ))}
+                        </div>
+                        {myReview.comment && <p className="mt-1 text-sm text-ink-600">"{myReview.comment}"</p>}
+                      </div>
+                    ) : myCompletedApptId ? (
+                      <Link to={`/review/${myCompletedApptId}`} className="rounded-full border-2 border-amber-400 px-4 py-2 text-sm font-semibold text-amber-600 transition hover:bg-amber-50">Rate Doctor</Link>
+                    ) : null}
                   </div>
 
                   <div className="mt-6 grid grid-cols-3 gap-4 sm:gap-6">

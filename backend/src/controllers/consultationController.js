@@ -2,12 +2,11 @@ const asyncHandler = require("express-async-handler");
 const Appointment = require("../models/Appointment");
 const Message = require("../models/Message");
 const Signal = require("../models/Signal");
-const notify = require("../services/notify");
+const { getIO } = require("../services/socket");
+const { cacheDelPattern, cacheDel } = require("../utils/cache");
+const { notify } = require("../services/notify");
+const { uploadSingle } = require("../middleware/upload");
 
-// Shared guard: loads the appointment and makes sure the logged-in account
-// (patient or doctor) is actually a participant. Returns { appointment, myRole }.
-// Follows this codebase's convention of setting res.status() before throwing,
-// since errorMiddleware reads the status off the response, not the error.
 async function loadAsParticipant(req, res) {
   const appointment = await Appointment.findById(req.params.id);
   if (!appointment) {
@@ -26,11 +25,6 @@ async function loadAsParticipant(req, res) {
   return { appointment, myRole: isPatient ? "patient" : "doctor" };
 }
 
-// @desc   Get consultation room info (also lazily starts the session if the
-//         scheduler hasn't ticked yet but the appointment time has passed —
-//         so opening the link never shows a dead room).
-// @route  GET /api/consultations/:id
-// @access Private (patient or doctor on the appointment)
 const getRoom = asyncHandler(async (req, res) => {
   const { appointment, myRole } = await loadAsParticipant(req, res);
 
@@ -50,26 +44,23 @@ const getRoom = asyncHandler(async (req, res) => {
     throw new Error("This appointment isn't confirmed, so there is no active consultation room");
   }
 
-  res.json({
-    success: true,
-    appointment,
-    myRole,
-    canJoin: appointment.status === "confirmed",
-  });
+  res.json({ success: true, appointment, myRole, canJoin: appointment.status === "confirmed" });
 });
 
-// @desc   Get chat history for an appointment
-// @route  GET /api/consultations/:id/messages
-// @access Private (patient or doctor on the appointment)
 const getMessages = asyncHandler(async (req, res) => {
   const { appointment } = await loadAsParticipant(req, res);
-  const messages = await Message.find({ appointmentId: appointment._id }).sort({ createdAt: 1 }).limit(500);
-  res.json({ success: true, messages });
+  const { page = 1, limit = 50 } = req.query;
+  const skip = (Number(page) - 1) * Number(limit);
+
+  const messages = await Message.find({ appointmentId: appointment._id })
+    .sort({ createdAt: -1 })
+    .skip(skip)
+    .limit(Number(limit))
+    .populate("sender", "name avatarUrl");
+
+  res.json({ success: true, messages: messages.reverse() });
 });
 
-// @desc   Send a chat message
-// @route  POST /api/consultations/:id/messages
-// @access Private (patient or doctor on the appointment)
 const sendMessage = asyncHandler(async (req, res) => {
   const { appointment, myRole } = await loadAsParticipant(req, res);
   const { text } = req.body;
@@ -81,21 +72,53 @@ const sendMessage = asyncHandler(async (req, res) => {
 
   const message = await Message.create({
     appointmentId: appointment._id,
+    room: `consultation_${appointment._id}`,
+    sender: req.user.id,
     senderId: req.user.id,
-    senderRole: myRole,
+    role: myRole,
+    content: text.trim(),
     text: text.trim(),
   });
 
-  // Notify the other participant only for the very first message of a batch
-  // isn't tracked here to keep this simple/cheap — the in-app bell + the
-  // consultation page's own polling are enough for an active call.
+  const populated = await message.populate("sender", "name avatarUrl");
 
-  res.status(201).json({ success: true, message });
+  const io = getIO();
+  io.to(`room_${appointment._id}`).emit("new_message", populated);
+
+  await cacheDelPattern(`messages:${appointment._id}:*`);
+  res.status(201).json({ success: true, message: populated });
 });
 
-// @desc   Poll for WebRTC signaling messages sent by the other participant
-// @route  GET /api/consultations/:id/signals?since=<ISO timestamp>
-// @access Private (patient or doctor on the appointment)
+const uploadFiles = asyncHandler(async (req, res) => {
+  const { appointment } = await loadAsParticipant(req, res);
+
+  if (!req.files || !req.files.length) {
+    res.status(400);
+    throw new Error("No files uploaded");
+  }
+
+  const urls = req.files.map((f) => f.path);
+
+  const message = await Message.create({
+    appointmentId: appointment._id,
+    room: `consultation_${appointment._id}`,
+    sender: req.user.id,
+    senderId: req.user.id,
+    role: "system",
+    content: `📎 ${urls.length} file(s) uploaded`,
+    text: `📎 ${urls.length} file(s) uploaded`,
+    files: urls,
+  });
+
+  const populated = await message.populate("sender", "name avatarUrl");
+
+  const io = getIO();
+  io.to(`room_${appointment._id}`).emit("new_message", populated);
+
+  await cacheDelPattern(`messages:${appointment._id}:*`);
+  res.status(201).json({ success: true, message: populated, urls });
+});
+
 const getSignals = asyncHandler(async (req, res) => {
   const { appointment, myRole } = await loadAsParticipant(req, res);
   const otherRole = myRole === "patient" ? "doctor" : "patient";
@@ -110,9 +133,6 @@ const getSignals = asyncHandler(async (req, res) => {
   res.json({ success: true, signals, serverTime: new Date() });
 });
 
-// @desc   Push a WebRTC signaling message (offer/answer/candidate/hangup)
-// @route  POST /api/consultations/:id/signals
-// @access Private (patient or doctor on the appointment)
 const sendSignal = asyncHandler(async (req, res) => {
   const { appointment, myRole } = await loadAsParticipant(req, res);
   const { kind, payload } = req.body;
@@ -129,8 +149,6 @@ const sendSignal = asyncHandler(async (req, res) => {
     payload,
   });
 
-  // First offer of a call: nudge the other side with a notification in case
-  // they aren't already sitting on the consultation page.
   if (kind === "offer") {
     const otherUserId = myRole === "patient" ? appointment.providerId : appointment.patientId;
     const otherRole = myRole === "patient" ? "doctor" : "patient";
@@ -147,4 +165,4 @@ const sendSignal = asyncHandler(async (req, res) => {
   res.status(201).json({ success: true, signal });
 });
 
-module.exports = { getRoom, getMessages, sendMessage, getSignals, sendSignal };
+module.exports = { getRoom, getMessages, sendMessage, uploadFiles, getSignals, sendSignal };

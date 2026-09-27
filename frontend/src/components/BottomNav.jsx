@@ -2,10 +2,11 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import { Home, Search, MessageCircle, User } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext";
+import { useAuth } from "../context/AuthContext";
 
-// Mobile-only bottom tab bar, mirrors common health-app navigation patterns.
 export default function BottomNav() {
   const { t } = useLanguage();
+  const { user } = useAuth();
   const items = [
     { to: "/", label: t("bottom_home"), icon: Home },
     { to: "/search", label: t("bottom_search"), icon: Search },

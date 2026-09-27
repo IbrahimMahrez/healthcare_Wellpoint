@@ -18,7 +18,7 @@ export default function ProtectedRoute({ children, role, roles }) {
     return <Navigate to="/login" replace />;
   }
 
-  const allowedRoles = roles || (role ? [role] : null);
+  const allowedRoles = roles || (role ? (Array.isArray(role) ? role : [role]) : null);
 
   // Check if user has one of the required roles
   if (allowedRoles && !allowedRoles.includes(user.role)) {

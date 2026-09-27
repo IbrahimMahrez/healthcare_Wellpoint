@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { Menu, X, Stethoscope, Receipt, ScanLine, HeartPulse, ClipboardCheck, FlaskConical, Siren } from "lucide-react";
+import { Menu, X, Stethoscope, Receipt, ScanLine, HeartPulse, ClipboardCheck, FlaskConical, Siren, MessageSquare, Upload, CreditCard, Clock } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import { useLanguage } from "../context/LanguageContext";
 import NotificationBell from "./NotificationBell";
@@ -17,6 +17,7 @@ export default function Navbar() {
     { to: "/search", label: t("nav_findDoctor") },
     { to: "/pharmacies", label: t("nav_pharmacies") },
     { to: "/ai-assistant", label: t("nav_ai") },
+    { to: "/chat", label: t("nav_chat"), icon: MessageSquare },
   ];
 
   const dashboardPath =
@@ -29,6 +30,11 @@ export default function Navbar() {
       : user?.role === "pharmacy"
       ? "/pharmacy-dashboard"
       : "/dashboard";
+
+  const quickActions = [
+    { to: "/upload", icon: Upload, label: t("nav_upload") },
+    { to: "/payments", icon: CreditCard, label: t("nav_payments") },
+  ];
 
   return (
     <header className="sticky top-0 z-40 border-b border-primary-100 bg-primary-50/90 backdrop-blur">
@@ -160,6 +166,20 @@ export default function Navbar() {
                       </Link>
                     ))}
                   </div>
+
+                   <div className="mt-2 flex flex-col gap-2 px-3">
+                     {[
+                       ...(user?.role === "doctor" ? [{ to: "/slots", icon: Clock, label: "My Slots", tint: "bg-primary-50 text-primary-600" }] : []),
+                       { to: "/chat", icon: MessageSquare, label: "Chat", tint: "bg-primary-50 text-primary-600" },
+                       { to: "/upload", icon: Upload, label: "Upload", tint: "bg-green-50 text-green-600" },
+                       { to: "/payments", icon: CreditCard, label: "Payments", tint: "bg-amber-50 text-amber-600" },
+                     ].map(({ to, icon: Icon, label, tint }) => (
+                       <Link key={to} to={to} onClick={() => setOpen(false)} className={`flex items-center gap-2 rounded-lg border border-primary-100 px-2.5 py-2 text-xs font-semibold text-ink-700 hover:border-primary-300 ${tint}`}>
+                         <span className="flex h-7 w-7 items-center justify-center rounded-md">{<Icon size={14} />}</span>
+                         <span className="truncate">{label}</span>
+                       </Link>
+                     ))}
+                   </div>
 
                   <button
                     onClick={() => {

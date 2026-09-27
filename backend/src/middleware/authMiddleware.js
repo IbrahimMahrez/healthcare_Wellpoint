@@ -4,14 +4,10 @@ const User = require("../models/User");
 const Doctor = require("../models/Doctor");
 const Lab = require("../models/Lab");
 const Pharmacy = require("../models/Pharmacy");
+const RefreshToken = require("../models/RefreshToken");
 
-// NOTE: this must mirror MODEL_BY_ROLE in authController.js. Previously "lab"
-// and "pharmacy" were missing here, so any lab/pharmacy account that logged in
-// successfully would fail every subsequent authenticated request (protect()
-// looked them up in the wrong collection and always got null back).
 const MODEL_BY_ROLE = { patient: User, admin: User, doctor: Doctor, lab: Lab, pharmacy: Pharmacy };
 
-// Verify JWT and attach req.user = { id, role }
 const protect = asyncHandler(async (req, res, next) => {
   let token;
   if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
@@ -39,7 +35,20 @@ const protect = asyncHandler(async (req, res, next) => {
   }
 });
 
-// Restrict route to specific roles: authorize("doctor", "admin")
+const protectSocket = (socket, next) => {
+  const token = socket.handshake.auth.token;
+  if (!token) {
+    return next(new Error("Authentication error"));
+  }
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    socket.user = decoded;
+    next();
+  } catch (err) {
+    next(new Error("Authentication error"));
+  }
+};
+
 const authorize = (...roles) => (req, res, next) => {
   if (!req.user || !roles.includes(req.user.role)) {
     res.status(403);
@@ -48,4 +57,4 @@ const authorize = (...roles) => (req, res, next) => {
   next();
 };
 
-module.exports = { protect, authorize };
+module.exports = { protect, protectSocket, authorize };

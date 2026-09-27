@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import {
   CalendarClock, CheckCircle, XCircle, Video, Pill, Send, Users, Clock3,
   Plus, Trash2, FlaskConical, ScanLine, ArrowLeft, X, UserRound, RotateCcw,
@@ -485,9 +486,18 @@ function AvailabilityTab() {
   const [to, setTo] = useState("17:00");
 
   useEffect(() => {
-    if (!user?.id) return;
-    api.get(`/doctors/${user.id}`).then(({ data }) => setSlots(data.doctor.availableSlots || [])).finally(() => setLoading(false));
-  }, [user?.id]);
+    const timeout = setTimeout(() => setLoading(false), 8000);
+    api.get("/doctors/me")
+      .then(({ data }) => {
+        if (data?.doctor) {
+          setSlots(data.doctor.availableSlots || []);
+        } else {
+          setSlots([]);
+        }
+      })
+      .catch((err) => { console.error("Load slots error:", err); setSlots([]); })
+      .finally(() => { clearTimeout(timeout); setLoading(false); });
+  }, []);
 
   const save = async (nextSlots) => {
     setSaving(true);
@@ -513,6 +523,20 @@ function AvailabilityTab() {
   return (
     <div className="mt-4 space-y-5">
       <div className="rounded-xl border border-primary-100 bg-white p-4">
+        <div className="flex items-center justify-between">
+          <div>
+            <h3 className="mb-1 flex items-center gap-2 text-sm font-semibold text-ink-900">
+              <Clock3 size={15} /> Your available slots
+            </h3>
+            <p className="text-xs text-ink-500">Set your weekly hours so patients can book with you.</p>
+          </div>
+          <Link to="/slots" className="rounded-full bg-primary-600 px-4 py-1.5 text-xs font-semibold text-white hover:bg-primary-700">
+            Manage Slots →
+          </Link>
+        </div>
+      </div>
+
+      <div className="rounded-xl border border-primary-100 bg-white p-4">
         <h3 className="mb-3 text-sm font-semibold text-ink-900">Add a weekly available slot</h3>
         <div className="flex flex-wrap items-end gap-2">
           <div>
@@ -535,13 +559,9 @@ function AvailabilityTab() {
         </div>
       </div>
 
-      <div className="rounded-xl border border-primary-100 bg-white p-4">
-        <h3 className="mb-3 flex items-center gap-2 text-sm font-semibold text-ink-900">
-          <Clock3 size={15} /> Your current available slots
-        </h3>
-        {slots.length === 0 ? (
-          <p className="text-sm text-ink-500">No available slots set — patients won't be able to see when you're free.</p>
-        ) : (
+      {slots.length > 0 && (
+        <div className="rounded-xl border border-primary-100 bg-white p-4">
+          <h3 className="mb-3 text-sm font-semibold text-ink-900">Current slots</h3>
           <div className="grid gap-2 sm:grid-cols-2">
             {slots.map((s, i) => (
               <div key={i} className="flex items-center justify-between rounded-lg bg-ink-50/60 px-3 py-2 text-sm">
@@ -552,8 +572,8 @@ function AvailabilityTab() {
               </div>
             ))}
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }

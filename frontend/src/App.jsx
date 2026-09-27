@@ -20,6 +20,11 @@ import LabTests from "./pages/LabTests";
 import Consultation from "./pages/Consultation";
 import LabDashboard from "./pages/LabDashboard";
 import PharmacyDashboard from "./pages/PharmacyDashboard";
+import AvailableSlots from "./pages/AvailableSlots";
+import Payments from "./pages/Payments";
+import UploadFiles from "./pages/UploadFiles";
+import Chat from "./pages/Chat";
+import ReviewDoctor from "./pages/ReviewDoctor";
 const Emergency = React.lazy(() => import("./pages/Emergency"));
 
 export default function App() {
@@ -102,6 +107,46 @@ export default function App() {
           element={
             <ProtectedRoute roles={["patient", "doctor"]}>
               <Consultation />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/upload"
+          element={
+            <ProtectedRoute role={["patient", "doctor"]}>
+              <UploadFiles />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/slots"
+          element={
+            <ProtectedRoute role="doctor">
+              <AvailableSlots />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/review/:appointmentId"
+          element={
+            <ProtectedRoute role="patient">
+              <ReviewDoctor />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/chat"
+          element={
+            <ProtectedRoute role={["patient", "doctor"]}>
+              <Chat />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/payments"
+          element={
+            <ProtectedRoute role="patient">
+              <Payments />
             </ProtectedRoute>
           }
         />

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useState, useCallback } from "react";
 import api from "../services/api";
 
 const AuthContext = createContext(null);
@@ -8,7 +8,24 @@ export const AuthProvider = ({ children }) => {
     const stored = localStorage.getItem("user");
     return stored ? JSON.parse(stored) : null;
   });
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  const fetchMe = useCallback(async () => {
+    try {
+      const { data } = await api.get("/auth/me");
+      setUser(data.user);
+      localStorage.setItem("user", JSON.stringify(data.user));
+    } catch (_) {
+      setUser(null);
+      localStorage.removeItem("user");
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchMe();
+  }, [fetchMe]);
 
   const login = async (email, password, role) => {
     setLoading(true);
@@ -36,7 +53,10 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const logout = () => {
+  const logout = async () => {
+    try {
+      await api.post("/auth/logout");
+    } catch (_) {}
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     setUser(null);
