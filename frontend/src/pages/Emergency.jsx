@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { MapContainer, TileLayer, Marker, Popup, Polyline, useMap } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+// Lucide icons are used for consistent, lightweight SVG icons across the app.
 import {
   Siren, MapPin, Phone, Navigation, AlertTriangle, LocateFixed,
   Stethoscope, Building2, Loader2, Star,
